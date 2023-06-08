@@ -1,10 +1,23 @@
+// TODO:triggerを設定する関数を作成する
+// TODO: プロパティから呼び出すようにする
+// TODO: プロパティを設定する関数を作成する
 const SECRET_KEY = '' // シークレットキー
 const NOTION_DATABASE_ID = ''; // データベースID
 
 function getNotionDataBaseItems() {
-  const base_url = 'https://api.notion.com/v1/databases/' + NOTION_DATABASE_ID + '/query';
+  // TODO: columnsの取得->DBの取得->スプレッドシートの初期化・書き込み の順で処理をする
   const columnsList = getNotionDataBaseColumn()
 
+  // スプレッドシートに書き込む処理
+  // TODO: スプレッドシートに書き込む処理を関数化
+  const SHEET_URL = "";
+  const SHEET_NAME = "";
+  var spreadSheet = SpreadsheetApp.openById(SHEET_URL);
+  var sheet = spreadSheet.getSheetByName(SHEET_NAME);
+
+  sheet.appendRow(columnsList)
+
+  const base_url = 'https://api.notion.com/v1/databases/' + NOTION_DATABASE_ID + '/query';
   const options = {
     'method': 'post',
     'headers': {
@@ -18,11 +31,12 @@ function getNotionDataBaseItems() {
   let jsonRes = JSON.parse(res)
 
   for (result of jsonRes.results) {
+    record = []
     for (column of columnsList) {
-      console.log(result.properties[column])
-      format_record(result.properties[column])
-      // TODO: 取得したオブジェクトのタイプを見て、格納する変数を決める関数を作成する
+      record.push(format_record(result.properties[column]))
     }
+    console.log(record)
+    sheet.appendRow(record)
   }
 
 }
@@ -50,63 +64,60 @@ function format_record(propatie) {
   // typeの種類:https://developers.notion.com/reference/property-object
   switch (type) {
     case 'title':
-      console.log(propatie.title[0].plain_text);
-      break;
+      return propatie.title[0].plain_text;
     case 'checkbox':
-      console.log("checkbox!");
-      break;
+      return propatie.checkbox;
     case 'date':
       //propatie.date
       //{start: , end: , timezona: }
       // date が存在すればstartを出力 なければ 空文字
-      console.log(propatie.date ? propatie.date.start : '');
-      break;
+      return (propatie.date ? propatie.date.start : '');
     case 'email':
-      console.log('email');
-      break;
+      return propatie.email;
     case 'files':
-      console.log('files');
-      break;
+      items = ""
+      propatie.files.forEach(element => items += (element.file.url + ','));
+      items = items.slice(0, -1)
+      return items
     case 'formula':
-      console.log('formula');
-      break;
+      return propatie.formula.string;
     case 'last_edited_by':
-      console.log('last_edited_by');
-      break;
+      return propatie.last_edited_by.name;
     case 'last_edited_time':
-      console.log('last_edited_time');
-      break;
+      return propatie.last_edited_time;
     case 'multi_select':
-      propatie.multi_select.forEach(element => console.log(element.name));
-      break;
+      items = ""
+      propatie.multi_select.forEach(element => items += (element.name + ','));
+      items = items.slice(0, -1)
+      return items
     case 'number':
-      console.log('number');
-      break;
+      return propatie.number
     case 'people':
-      console.log('people');
-      break;
+      items = ""
+      propatie.people.forEach(element => items += (element.name + ','));
+      items = items.slice(0, -1)
+      return items
     case 'phone_number':
-      console.log('phone_number');
-      break;
+      return propatie.phone_number
     case 'relation':
-      console.log('relation');
-      break;
+      return propatie.relation
     case 'rich_text':
-      console.log(propatie.rich_text[0] ? propatie.rich_text[0].plain_text : '');
-      break;
+      return (propatie.rich_text[0] ? propatie.rich_text[0].plain_text : '');
     case 'rollup':
-      console.log('rollup');
-      break;
+      return propatie.rollup;
     case 'select':
-      console.log('select');
-      break;
+      return propatie.select.name;
     case 'status':
-      console.log('status');
-      break;
+      return propatie.status.name;
     case 'url':
-      console.log('url');
-      break;
+      return propatie.url;
+    case 'created_time':
+      return propatie.created_time;
+    case 'unique_id':
+      return propatie.unique_id.number;
+    case 'created_by':
+      return propatie.created_by.name;
     default:
-      console.log(`Sorry, we are out of ${expr}.`);
+      console.log(`不正な型の値が入力されました`);
   }
 }
