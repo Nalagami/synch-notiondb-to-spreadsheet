@@ -1,8 +1,8 @@
 // TODO:triggerを設定する関数を作成する
-// TODO: プロパティから呼び出すようにする
-// TODO: プロパティを設定する関数を作成する
-const SECRET_KEY = ""; // シークレットキー
-const NOTION_DATABASE_ID = ""; // データベースID
+const SECRET_KEY =
+  PropertiesService.getScriptProperties().getProperty("NOTION_API_TOKEN"); // シークレットキー
+const NOTION_DATABASE_ID =
+  PropertiesService.getScriptProperties().getProperty("NOTION_DATABASE_ID"); // データベースID
 
 function main() {
   // TODO: columnsの取得->DBの取得->スプレッドシートの初期化・書き込み の順で処理をする
@@ -10,8 +10,10 @@ function main() {
 
   // スプレッドシートに書き込む処理
   // TODO: スプレッドシートに書き込む処理を関数化
-  const SHEET_URL = "";
-  const SHEET_NAME = "";
+  const SHEET_URL =
+    PropertiesService.getScriptProperties().getProperty("SPREAD_SHEET_ID");
+  const SHEET_NAME =
+    PropertiesService.getScriptProperties().getProperty("SPREAD_SHEET_NAME");
   var spreadSheet = SpreadsheetApp.openById(SHEET_URL);
   var sheet = spreadSheet.getSheetByName(SHEET_NAME);
 
