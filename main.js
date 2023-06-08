@@ -1,31 +1,20 @@
-// TODO:triggerを設定する関数を作成する
-const SECRET_KEY =
-  PropertiesService.getScriptProperties().getProperty("NOTION_API_TOKEN"); // シークレットキー
-const NOTION_DATABASE_ID =
-  PropertiesService.getScriptProperties().getProperty("NOTION_DATABASE_ID"); // データベースID
-
 function main() {
+  const SECRET_KEY =
+    PropertiesService.getScriptProperties().getProperty("NOTION_API_TOKEN"); // シークレットキー
+  const NOTION_DATABASE_ID =
+    PropertiesService.getScriptProperties().getProperty("NOTION_DATABASE_ID"); // データベースID
+
+  const notion = new Notion(NOTION_DATABASE_ID, SECRET_KEY);
+
   // --Notion DBのカラム情報取得--
-  const columnsList = getNotionDataBaseColumn();
+  const columnsList = notion.getNotionDataBaseColumn();
 
   // --Notion DBのアイテムを取得・整形--
-  // スプレッドシートに書き込むための配列を準備
-  records = [];
-
-  // カラムを挿入
-  records.push(columnsList);
-
   // Notion DBのアイテムを取得
-  let results = getNotionDataBaseItems();
+  let results = notion.getNotionDataBaseItems();
 
   // アイテムを行ごとに配列へ格納
-  for (result of results) {
-    record = [];
-    for (column of columnsList) {
-      record.push(format_record(result.properties[column]));
-    }
-    records.push(record);
-  }
+  const records = notion.generateSpreadsheetData(columnsList, results);
 
   // --スプレッドシートに書き込む処理--
   const SHEET_URL =
