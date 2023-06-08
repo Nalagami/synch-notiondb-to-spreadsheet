@@ -36,7 +36,7 @@ function format_record(propatie) {
   // typeの種類:https://developers.notion.com/reference/property-object
   switch (type) {
     case "title":
-      return propatie.title[0].plain_text;
+      return propatie.title.length ? propatie.title[0].plain_text : "";
     case "checkbox":
       // boolean
       return propatie.checkbox;
@@ -79,9 +79,9 @@ function format_record(propatie) {
     case "rollup":
       return propatie.rollup;
     case "select":
-      return propatie.select.name;
+      return propatie.select ? propatie.select.name : "";
     case "status":
-      return propatie.status.name;
+      return propatie.status ? propatie.status.name : "";
     case "url":
       return propatie.url;
     case "created_time":
