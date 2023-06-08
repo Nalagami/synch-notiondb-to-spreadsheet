@@ -15,6 +15,8 @@ function getNotionDataBaseItems() {
   var spreadSheet = SpreadsheetApp.openById(SHEET_URL);
   var sheet = spreadSheet.getSheetByName(SHEET_NAME);
 
+  deleteSheetData(sheet)
+
   sheet.appendRow(columnsList)
 
   const base_url = 'https://api.notion.com/v1/databases/' + NOTION_DATABASE_ID + '/query';
@@ -120,4 +122,8 @@ function format_record(propatie) {
     default:
       console.log(`不正な型の値が入力されました`);
   }
+}
+
+function deleteSheetData(sheet) {
+  sheet.deleteRows(1, sheet.getLastRow());
 }
