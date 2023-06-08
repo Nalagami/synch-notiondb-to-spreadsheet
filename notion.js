@@ -5,6 +5,11 @@ const Notion = class {
     this.SECRET_KEY = SECRET_KEY;
   }
 
+  /**
+   * Notionからデータベースアイテムを取得する関数
+   * @returns {Array<Object>} 取得されたデータベースアイテムの配列
+   */
+
   getNotionDataBaseItems() {
     const base_url =
       "https://api.notion.com/v1/databases/" +
@@ -23,6 +28,10 @@ const Notion = class {
     return JSON.parse(res).results;
   }
 
+  /**
+   * Notionのデータベースからカラム情報を取得する関数
+   * @returns {Array<string>} 取得されたカラム名の配列
+   */
   getNotionDataBaseColumn() {
     const base_url =
       "https://api.notion.com/v1/databases/" + this.NOTION_DATABASE_ID;
@@ -41,6 +50,12 @@ const Notion = class {
     return Object.keys(jsonRes.properties);
   }
 
+  /**
+   * スプレッドシートにデータを入れるための二次元配列を生成する関数
+   * @param {Array<string>} columnsList - カラムのリスト
+   * @param {Array<Object>} results - データベースアイテムのリスト
+   * @returns {Array<Array<any>>} 生成された二次元配列
+   */
   generateSpreadsheetData(columnsList, results) {
     let records = [];
     // カラムを挿入
@@ -55,6 +70,11 @@ const Notion = class {
     return records;
   }
 
+  /**
+   * Notionのプロパティを適切なフォーマットで変換する関数
+   * @param {Object} property - 変換するプロパティオブジェクト
+   * @returns {any} フォーマットされたプロパティ値
+   */
   formatRecord(propatie) {
     const type = propatie.type;
     // typeの種類:https://developers.notion.com/reference/property-object
