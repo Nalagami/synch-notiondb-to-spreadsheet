@@ -1,5 +1,5 @@
-function setProperties() {
-  // Notion関係
+function Init() {
+  // --Notion関係--
   // Notion API token
   PropertiesService.getScriptProperties().setProperty(
     "NOTION_API_TOKEN",
@@ -11,7 +11,7 @@ function setProperties() {
     "<notion database id>"
   );
 
-  // sheet関係
+  // --sheet関係--
   // sheet id
   PropertiesService.getScriptProperties().setProperty(
     "SPREAD_SHEET_ID",
@@ -22,4 +22,12 @@ function setProperties() {
     "SPREAD_SHEET_NAME",
     "<spread sheet name>"
   );
+
+  // --trigger set--
+  setTrigger();
+}
+
+function setTrigger() {
+  //10分ごとに繰り返し定期実行するトリガーを作成
+  ScriptApp.newTrigger("main").timeBased().everyMinutes(10).create();
 }
