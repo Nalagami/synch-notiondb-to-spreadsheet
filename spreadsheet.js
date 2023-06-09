@@ -2,13 +2,13 @@ const SpreadSheet = class {
   /**
    * スプレッドシートURLとシート名を指定して新しいスプレッドシートオブジェクトを作成する。
    *
-   * @param {string} sheetUrl - スプレッドシートのURL。
+   * @param {string} sheetId - スプレッドシートのURL。
    * @param {string} sheetName - スプレッドシートのシート名。
    */
-  constructor(sheetUrl, sheetName) {
-    this.SHEET_URL = sheetUrl;
+  constructor(sheetId, sheetName) {
+    this.SHEET_ID = sheetId;
     this.SHEET_NAME = sheetName;
-    this.spreadSheet = SpreadsheetApp.openById(this.SHEET_URL);
+    this.spreadSheet = SpreadsheetApp.openById(this.SHEET_ID);
     this.spreadSheet.renameActiveSheet(this.SHEET_NAME);
     this.sheet = this.spreadSheet.getActiveSheet();
   }
