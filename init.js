@@ -17,11 +17,11 @@ function Init() {
     "SPREAD_SHEET_ID",
     "<spread sheet id>"
   );
-  // sheet name
-  PropertiesService.getScriptProperties().setProperty(
-    "SPREAD_SHEET_NAME",
-    "<spread sheet name>"
-  );
+  // // sheet name
+  // PropertiesService.getScriptProperties().setProperty(
+  //   "SPREAD_SHEET_NAME",
+  //   "<spread sheet name>"
+  // );
 
   // --trigger set--
   setTrigger();
