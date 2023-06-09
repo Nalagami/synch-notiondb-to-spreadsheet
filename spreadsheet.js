@@ -17,4 +17,9 @@ const SpreadSheet = class {
       this.sheet.appendRow(record);
     }
   }
+
+  getColumn() {
+    const values = this.sheet.getDataRange().getValues();
+    return values[0];
+  }
 };
