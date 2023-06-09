@@ -1,9 +1,11 @@
 const SpreadSheet = class {
   constructor(sheetUrl, sheetName) {
-    this.sheetUrl = sheetUrl;
-    this.sheetName = sheetName;
-    this.spreadSheet = SpreadsheetApp.openById(this.sheetUrl);
-    this.sheet = this.spreadSheet.getSheetByName(this.sheetName);
+    this.SHEET_URL = sheetUrl;
+    this.SHEET_NAME = sheetName;
+    this.spreadSheet = SpreadsheetApp.openById(this.SHEET_URL);
+    this.sheet = this.spreadSheet.getSheetByName(this.SHEET_NAME)
+      ? this.spreadSheet.getSheetByName(this.SHEET_NAME)
+      : this.spreadSheet.insertSheet(this.SHEET_NAME);
   }
 
   updateSheetData(records) {

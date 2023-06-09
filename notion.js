@@ -5,6 +5,25 @@ const Notion = class {
     this.SECRET_KEY = SECRET_KEY;
   }
 
+  getNotionDataBaseIdentifier() {
+    const base_url =
+      "https://api.notion.com/v1/databases/" + this.NOTION_DATABASE_ID;
+    const options = {
+      method: "get",
+      headers: {
+        Authorization: "Bearer " + this.SECRET_KEY,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json",
+      },
+    };
+
+    let res = UrlFetchApp.fetch(base_url, options);
+    let jsonRes = JSON.parse(res);
+    return jsonRes.title.length
+      ? object.title[0].plain_text
+      : this.NOTION_DATABASE_ID;
+  }
+
   /**
    * Notionからデータベースアイテムを取得する関数
    * @returns {Array<Object>} 取得されたデータベースアイテムの配列

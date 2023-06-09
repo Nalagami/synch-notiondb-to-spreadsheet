@@ -13,12 +13,24 @@ function main() {
 
   // インスタンス生成
   const notion = new Notion(NOTION_DATABASE_ID, SECRET_KEY);
-  const spreadSheet = new SpreadSheet(SHEET_URL, SHEET_NAME);
+  const spreadSheet = new SpreadSheet(
+    SHEET_URL,
+    notion.getNotionDataBaseIdentifier()
+  );
 
   // --カラム情報取得--
   // spreadsheetにカラムがあればそちらを優先する
-  const columnsList = spreadSheet.getColumn().length
-    ? spreadSheet.getColumn()
+  const sheetColumns = spreadSheet.getColumn();
+  const isEmptyColumn = (array) => {
+    return (
+      Array.isArray(array) &&
+      !array.filter((e) => e !== "" && e !== null).length
+    );
+  };
+  const shouldUseSpreadSheetColumns = !sheetColumns.some(isEmptyColumn);
+
+  const columnsList = shouldUseSpreadSheetColumns
+    ? sheetColumns
     : notion.getNotionDataBaseColumn();
 
   // --Notion DBのアイテムを取得・整形--
