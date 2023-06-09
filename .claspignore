@@ -4,3 +4,5 @@ package*
 node_modules
 
 README.md
+
+.eslintrc

@@ -1,4 +1,10 @@
 const SpreadSheet = class {
+  /**
+   * スプレッドシートURLとシート名を指定して新しいスプレッドシートオブジェクトを作成する。
+   *
+   * @param {string} sheetUrl - スプレッドシートのURL。
+   * @param {string} sheetName - スプレッドシートのシート名。
+   */
   constructor(sheetUrl, sheetName) {
     this.SHEET_URL = sheetUrl;
     this.SHEET_NAME = sheetName;
@@ -7,18 +13,32 @@ const SpreadSheet = class {
     this.sheet = this.spreadSheet.getActiveSheet();
   }
 
+  /**
+   * スプレッドシートのデータを更新する。
+   *
+   * @param {Array<Array<string>>} records - 更新する行と列の値を含む二次元配列。
+   */
   updateSheetData(records) {
     this.sheet.clear();
     this.addSheetData(records);
   }
 
+  /**
+   * スプレッドシートにデータを追加する。
+   *
+   * @param {Array<Array<string>>} records - 追加する行と列の値を含む二次元配列。
+   */
   addSheetData(records) {
-    // シートに書き込み
     for (const record of records) {
       this.sheet.appendRow(record);
     }
   }
 
+  /**
+   * スプレッドシートの最初の列の値を返す。
+   *
+   * @returns {Array<string>} 最初の行にある各列の値の配列。
+   */
   getColumn() {
     const values = this.sheet.getDataRange().getValues();
     return values[0];
