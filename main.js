@@ -27,9 +27,8 @@ function main() {
       !array.filter((e) => e !== "" && e !== null).length
     );
   };
-  const shouldUseSpreadSheetColumns = !sheetColumns.some(isEmptyColumn);
 
-  const columnsList = shouldUseSpreadSheetColumns
+  const columnsList = !isEmptyColumn(sheetColumns)
     ? sheetColumns
     : notion.getNotionDataBaseColumn();
 
