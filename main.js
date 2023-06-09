@@ -22,10 +22,8 @@ function main() {
   const SHEET_NAME =
     PropertiesService.getScriptProperties().getProperty("SPREAD_SHEET_NAME");
 
-  // シートの情報取得
-  const spreadSheet = SpreadsheetApp.openById(SHEET_URL);
-  const sheet = spreadSheet.getSheetByName(SHEET_NAME);
+  const spreadSheet = new SpreadSheet(SHEET_URL, SHEET_NAME);
 
   // シート更新
-  updateSheetData(sheet, records);
+  spreadSheet.updateSheetData(records);
 }

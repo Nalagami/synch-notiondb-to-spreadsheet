@@ -1,16 +1,20 @@
-function updateSheetData(sheet, records) {
-  deleteSheetData(sheet);
-  addSheetData(sheet, records);
-}
-
-function deleteSheetData(sheet) {
-  if (sheet.getLastRow() == 0) return;
-  sheet.deleteRows(1, sheet.getLastRow());
-}
-
-function addSheetData(sheet, records) {
-  // シートに書き込み
-  for (record of records) {
-    sheet.appendRow(record);
+const SpreadSheet = class {
+  constructor(sheetUrl, sheetName) {
+    this.sheetUrl = sheetUrl;
+    this.sheetName = sheetName;
+    this.spreadSheet = SpreadsheetApp.openById(this.sheetUrl);
+    this.sheet = this.spreadSheet.getSheetByName(this.sheetName);
   }
-}
+
+  updateSheetData(records) {
+    this.sheet.clear();
+    this.addSheetData(records);
+  }
+
+  addSheetData(records) {
+    // シートに書き込み
+    for (const record of records) {
+      this.sheet.appendRow(record);
+    }
+  }
+};
