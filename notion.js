@@ -20,7 +20,7 @@ const Notion = class {
     let res = UrlFetchApp.fetch(base_url, options);
     let jsonRes = JSON.parse(res);
     return jsonRes.title.length
-      ? object.title[0].plain_text
+      ? jsonRes.title[0].plain_text
       : this.NOTION_DATABASE_ID;
   }
 
