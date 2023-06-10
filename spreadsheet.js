@@ -9,8 +9,9 @@ const SpreadSheet = class {
     this.SHEET_ID = sheetId;
     this.SHEET_NAME = sheetName;
     this.spreadSheet = SpreadsheetApp.openById(this.SHEET_ID);
-    this.spreadSheet.renameActiveSheet(this.SHEET_NAME);
-    this.sheet = this.spreadSheet.getActiveSheet();
+    this.sheet = this.spreadSheet.getSheetByName(this.SHEET_NAME)
+      ? this.spreadSheet.getSheetByName(this.SHEET_NAME)
+      : this.spreadSheet.insertSheet(this.SHEET_NAME);
   }
 
   /**

@@ -17,31 +17,31 @@ const Sync = class {
    *
    * @returns {void}
    */
-  async syncData() {
+  syncData() {
     // Notionインスタンス生成
     const notion = new Notion(this.NOTION_DATABASE_ID, this.SECRET_KEY);
     // Google Sheetsインスタンス生成
     const spreadSheet = new SpreadSheet(
       this.SHEET_ID,
-      await notion.getNotionDataBaseIdentifier()
+      notion.getNotionDataBaseIdentifier()
     );
 
     // --カラム情報取得--
     // spreadsheetにカラムがあればそちらを優先する
-    const sheetColumns = await spreadSheet.getColumn();
+    const sheetColumns = spreadSheet.getColumn();
     const columnsList = !this.isEmptyColumn(sheetColumns)
       ? sheetColumns
       : notion.getNotionDataBaseColumn();
 
     // --Notion DBのアイテムを取得・整形--
     // Notion DBのアイテムを取得
-    let results = await notion.getNotionDataBaseItems();
+    let results = notion.getNotionDataBaseItems();
 
     // アイテムを行ごとに配列へ格納
     const records = notion.generateSpreadsheetData(columnsList, results);
 
     // シート更新
-    await spreadSheet.updateSheetData(records);
+    spreadSheet.updateSheetData(records);
   }
 
   /**
