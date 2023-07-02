@@ -44,4 +44,32 @@ const SpreadSheet = class {
     const values = this.sheet.getDataRange().getValues();
     return values[0];
   }
+
+  // Notion databse ID と API token を読み取る関数
+  // returns {Array<Object>}
+  // oojectは{id:, token:}
+  getNotionInfo() {
+    const sheet = this.spreadSheet.getSheetByName("設定");
+    const lastRow = this.getColmunLastRow(1);
+    const array = sheet.getRange(2, 1, 1, 2).getValues();
+    console.log(lastRow);
+    console.log(array);
+    const return_object_array = [];
+    for (const data of array) {
+      const object = {};
+      object.id = data[0];
+      object.token = data[0];
+      return_object_array.push(object);
+    }
+    console.log(return_object_array);
+  }
+
+  // TODO: 指定した行の最終行を取得する関数を作る
+  // 引数：行数 返り値：最終行数(nuber)
+  getColmunLastRow(column) {
+    return this.sheet
+      .getRange(1, column)
+      .getNextDataCell(SpreadsheetApp.Direction.UP)
+      .getRow();
+  }
 };

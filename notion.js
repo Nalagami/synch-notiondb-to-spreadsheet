@@ -45,7 +45,7 @@ const Notion = class {
       "https://api.notion.com/v1/databases/" +
       this.NOTION_DATABASE_ID +
       "/query";
-    const options = {
+    let options = {
       method: "post",
       headers: {
         Authorization: "Bearer " + this.SECRET_KEY,
@@ -55,7 +55,21 @@ const Notion = class {
     };
 
     let res = UrlFetchApp.fetch(base_url, options);
-    return JSON.parse(res).results;
+
+    let hasMore = JSON.parse(res).has_more;
+    let nextCursor = JSON.parse(res).next_cursor;
+
+    let data = JSON.parse(res).results;
+
+    while (hasMore) {
+      options["payload"] = JSON.stringify({ start_cursor: nextCursor });
+      let res2 = UrlFetchApp.fetch(base_url, options);
+      data = data.concat(JSON.parse(res2).results);
+      hasMore = JSON.parse(res2).has_more;
+      nextCursor = JSON.parse(res2).next_cursor;
+    }
+
+    return data;
   }
 
   /**
